@@ -7,7 +7,7 @@ PORT = 80
 
 s.connect((HOST, PORT))
 
-GetMessage = "GET /tictactoe/?board=xxxoooeee HTTP/1.1\r\nHost: www.ingonline.nu"
+GetMessage = "GET /tictactoe/?board=xxxoooeee HTTP/1.1\r\nHost: www.ingonline.nu\r\n\r\n"
 
 s.send(GetMessage.encode())
 dataRecived = s.recv(2048)
