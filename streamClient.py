@@ -1,9 +1,9 @@
 from socket import *
 from time import sleep
 
-host = ''
+host = ""
 port = 8080
-frequence = 0.1  #time in seconds
+frequence = 1  #time in seconds
 packageCounter = 0
 packageAmount = 40
 packageSize = 1000 #size in bytes
