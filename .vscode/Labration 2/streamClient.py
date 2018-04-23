@@ -1,18 +1,19 @@
 from socket import *
 from time import sleep
 
-host = ''
+host = '192.168.0.4'
 port = 8080
-frequence = 0.001  #time in seconds
+frequence = 21  #meddelanden/s
 packageCounter = 1
-packageAmount = 100
+packageAmount = 200
 packageSize = 1000 #size in bytes
 
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 
 
 data = ""
-for i in range(0, packageSize / 10):
+
+for i in range(0, 100):
     data += "ABCDEFGHIJ"
 
 
@@ -22,5 +23,5 @@ while packageCounter < packageAmount:
     packageCounter += 1
     print("Packet sent: " + msg[0:8] + "...\n")
     clientSocket.sendto(msg.encode(),(host, port))
-    sleep(frequence)
+    sleep(1/frequence)
  
