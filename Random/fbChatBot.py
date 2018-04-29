@@ -2,8 +2,6 @@ from fbchat import Client, log
 from fbchat.models import *
 
 
-
-
 class Jarvis(Client):
     first = True
     def onMessage(self, author_id=None, message_object=None, thread_id=None, thread_type=ThreadType.USER, **kwargs):
