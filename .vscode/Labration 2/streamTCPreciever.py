@@ -15,12 +15,12 @@ print ('Listening for TCP connection')
 
 connectionSocket, clientAddress = serverSocket.accept()
 
-showErrors = False
+showErrors = True
 while True:
 
     # read sentence of bytes from socket sent by the client
-    message = connectionSocket.recv(1024).decode()
-
+    message = connectionSocket.recv(1024)
+    print("[NEW] " + message.decode() + "[END]\n")
     sequenceNumber = int(message.decode()[0:5])
     if (sequenceNumber != lastRecieved) and showErrors:
         print("ERROR: expected packet:%d, got packet:%d\n" % (lastRecieved, sequenceNumber))
@@ -31,7 +31,7 @@ while True:
     if showErrors == False:
         print (message.decode()[0:20] + "...\n")
         print (clientAddress)
-    # close the TCP connection; the welcoming socket continues
+
 
 connectionSocket.close()
 
