@@ -8,6 +8,8 @@ from player import *
 
 from pygame.locals import *
 
+MULTIPLAYER = False
+
 # Pygame things
 FPS = 60
 pygame.init()
@@ -26,42 +28,47 @@ pygame.key.set_repeat(1, 40)
 if __name__ == '__main__':
     color = (0, 0, 0)
     player = Player([320, 300])
-    client = Client("127.0.0.1", 8080)
-    client.connect()
+    if MULTIPLAYER:
+        client = Client("80.78.218.133", 8080)
+        client.connect()
     while True:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                client.quit()
+                if MULTIPLAYER:
+                    client.quit()
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_SPACE:
-                    #print("JUMP")
-                    player.jump()
-                if event.key == K_d:
-                    player.move([1, 0])
-                if event.key == K_a:
-                    player.move([-1, 0])
-                if event.key == K_ESCAPE:
+
+            keys = pygame.key.get_pressed()
+            if keys[K_SPACE]:
+                player.jump()
+            if keys[K_d]:
+                player.move([1, 0])
+            if keys[K_a]:
+                player.move([-1, 0])
+            if keys[K_ESCAPE]:
+                if MULTIPLAYER:
                     client.quit()
-                    pygame.quit()
-                    sys.exit()
+                pygame.quit()
+                sys.exit()
 
 
         surface.fill((255,255,255))
         player.update()
         player.draw(surface)
 
-        for p in client.getPlayers():
-            p[1].update()
-            p[1].draw(surface)
+        if MULTIPLAYER:
+            for p in client.getPlayers():
+                p[1].update()
+                p[1].draw(surface)
 
         screen.blit(surface, (0,0))
 
         pygame.display.flip()
         pygame.display.update()
         player.update()
-        client.update(player.getPosition())
+        if MULTIPLAYER:
+            client.update(player.getPosition())
 
         fpsClock.tick(FPS)

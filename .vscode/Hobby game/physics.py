@@ -56,6 +56,14 @@ class Physics:
 
         if self.position[1] < 470:
             self.acceleration[1] += self.gravity
+        
+        
+        if self.acceleration[0] != 0:
+            if self.acceleration[0] > 0:
+                self.acceleration[0] -= 0.1
+            else:
+                self.acceleration[0] += 0.1    
+            
 
         # if self.acceleration[0] != 0:
         #     print(self.acceleration[0])

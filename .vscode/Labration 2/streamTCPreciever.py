@@ -2,26 +2,31 @@ from socket import *
 
 host = ''
 port = 12000
+lastRecieved = 1
 
-# create TCP welcoming socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind((host, port))
 
-# server starts listening for incoming TCP requests
+
 serverSocket.listen(1)
 print ('Listening for TCP connection')
 
 
+showErrors = True
 
-while True:
-    # server waits for incoming requests; new socket created on return
-    connectionSocket, addr = serverSocket.accept()
+while 1:
+    receiverSocket, addr = serverSocket.accept()
+    # read client's message and remember client's address (IP and port)
+    message, clientAddress = receiverSocket.recvfrom(2048)
 
-    # read sentence of bytes from socket sent by the client
-    sentence = connectionSocket.recv(1024).decode()
+    sequenceNumber = int(message.decode()[0:5])
+    if (sequenceNumber != lastRecieved) and showErrors:
+        print("ERROR: expected packet:%d, got packet:%d\n" % (lastRecieved, sequenceNumber))
+    lastRecieved += 1
 
-    # print unmodified sentance and client address
-    print (sentence)
+    # Print message and client address
+    if showErrors == False:
+        print (message.decode()[0:20] + "...\n")
+        print (clientAddress)
 
-    # close the TCP connection; the welcoming socket continues
-    connectionSocket.close()
+    receiverSocket.close()
