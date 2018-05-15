@@ -1,5 +1,6 @@
 from socket import *
 import time
+from time import sleep
 
 SERVER = '192.168.2.4'
 PORT = 12000
@@ -29,9 +30,8 @@ while (t1 - t0) < timer:
     print("Packet sent: " + msg[0:8] + "...\n")
     clientSocket.send(msg.encode())
     
-    time.sleep(frequence)
+    sleep(frequence)
     t1 = time.time()
-  
-
 
 clientSocket.close()
+
