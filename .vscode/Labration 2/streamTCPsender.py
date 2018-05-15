@@ -2,11 +2,11 @@ from socket import *
 import time
 from time import sleep
 
-SERVER = '192.168.2.4'
-PORT = 12000
-frequence = 50  # medd/s
+SERVER = '192.168.0.4'
+PORT = 8080
+frequence = 20  # medd/s
 packageCounter = 1 # for sequence number
-timer = 10 # how long will you send packets for
+timer = 10.0 # how long will you send packets for
 packageSize = 1000 # size in bytes
 
 # create TCP socket on client to use for connecting to remote server
@@ -20,18 +20,19 @@ data = ""
 for i in range(0, packageSize):
     data += "A"
 
-frequence = 1/frequence
-t0 = time.time() 
-t1 = 0
+frequence = 1.0/frequence
+timeElapsed = 0.0
  
-while (t1 - t0) < timer:
+while (timeElapsed) < timer:
     msg = str(packageCounter).zfill(5) + ";" + data
     packageCounter += 1
-    print("Packet sent: " + msg[0:8] + "...\n")
+    print(msg[0:10] + "...\n")
     clientSocket.send(msg.encode())
     
     sleep(frequence)
-    t1 = time.time()
+    timeElapsed += frequence
+
+clientSocket.send("end".encode())
 
 clientSocket.close()
 
